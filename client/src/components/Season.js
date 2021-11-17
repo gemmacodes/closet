@@ -1,5 +1,6 @@
 import React from "react";
 
+// one season checkbox 
 export default function Season({
   season,
   handleChangeCheckedSeasons,

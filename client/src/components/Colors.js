@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Color from "./Color.js";
 
+// displays collapsible color checkbox list
 export default function Colors({
   colors,
   handleChangeCheckedColors,

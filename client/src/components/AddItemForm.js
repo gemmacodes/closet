@@ -10,6 +10,7 @@ export default function AddItemForm({
   checkedStateSeasons,
   setFilteredItems,
 }) {
+  // new item (input) to be posted to DB
   const [input, setInput] = useState({
     category_id: 1,
     color_id: 1,
@@ -17,16 +18,19 @@ export default function AddItemForm({
     image: "",
   });
 
+  // changes new item values based on form selectors
   const handleInputChange = (event) => {
     const { value, name } = event.target;
     setInput((state) => ({ ...state, [name]: value }));
   };
 
+  // on submit, calls addItem
   const handleSubmit = (event) => {
     event.preventDefault();
     addItem();
   };
 
+  // creates query and posts new item to DB. returns
   const addItem = async () => {
     const filterQueryString = Object.keys(checkedStateCategories)
       .filter((category) => checkedStateCategories[category])

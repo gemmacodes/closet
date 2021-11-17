@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Category from "./Category.js";
 import "./Categories.css";
 
+// displays collapsible category checkbox list
 export default function Categories({
   categories,
   handleChangeCheckedCategories,

@@ -1,6 +1,7 @@
 import React from "react";
 import "./Item.css";
 
+// item card with delete button included
 export default function Item({ item, onClick }) {
   return (
     <div className="clothElement">

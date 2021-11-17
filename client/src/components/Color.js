@@ -1,5 +1,6 @@
 import React from "react";
 
+// one color checkbox 
 export default function Color({ color, handleChangeCheckedColors, isChecked }) {
   return (
     <div>

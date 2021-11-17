@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const db = require("../model/helper");
 
+// WORKS gets category list
 router.get("/categories", async function (req, res) {
   try {
     const results = await db("SELECT * FROM categories ORDER BY id ASC;");
@@ -12,6 +13,39 @@ router.get("/categories", async function (req, res) {
   }
 });
 
+// WORKS gets color list
+router.get("/colors", async function (req, res) {
+  try {
+    const results = await db("SELECT * FROM colors ORDER BY id ASC;");
+    res.send(results.data);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// WORKS gets season list
+router.get("/seasons", async function (req, res) {
+  try {
+    const results = await db("SELECT * FROM seasons ORDER BY id ASC;");
+    res.send(results.data);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// WORKS gets items from a given category
+router.get("/categories/:id/items", async function (req, res) {
+  try {
+    const results = await db(
+      `SELECT * FROM items WHERE category_id=${+req.params.id} ORDER BY id ASC;`
+    );
+    res.send(results.data);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// NEEDS FIXING: gets items from a given category AND color AND season
 router.get("/items", async function (req, res) {
   try {
     const { categories } = req.query;
@@ -20,12 +54,15 @@ router.get("/items", async function (req, res) {
 
     let results = null;
 
+    // if no filters are selected, all items are returned
     if (
       (!categories || !categories.length) &&
       (!colors || !colors.length) &&
       (!seasons || !seasons.length)
     ) {
-      results = await db("SELECT * FROM items ORDER BY id ASC;");
+      results = await db("SELECT * FROM items ORDER BY id ASC;");  
+
+    // if all filters are selected, items are selected according to those
     } else if (categories && colors && seasons) {
       const categoriesJoined = categories.join(",");
       const colorsJoined = colors.join(",");
@@ -81,41 +118,30 @@ router.get("/items", async function (req, res) {
   }
 });
 
-router.get("/colors", async function (req, res) {
-  try {
-    const results = await db("SELECT * FROM colors ORDER BY id ASC;");
-    res.send(results.data);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
 
-router.get("/seasons", async function (req, res) {
-  try {
-    const results = await db("SELECT * FROM seasons ORDER BY id ASC;");
-    res.send(results.data);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-router.get("/categories/:id/items", async function (req, res) {
-  try {
-    const results = await db(
-      `SELECT * FROM items WHERE category_id=${+req.params.id} ORDER BY id ASC;`
-    );
-    res.send(results.data);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
+// WIP: adds new items to items table on DB
 router.post("/items", async function (req, res) {
   try {
     const { category_id, color_id, season_id, image } = req.body;
+
+    // inserts item into DB
     await db(
-      `INSERT INTO items (category_id, color_id, season_id, image) VALUES ("${category_id}","${color_id}","${season_id}", "${image}");`
+      `INSERT INTO items (category_id, image) VALUES ("${category_id}", "${image}");`
     );
+
+    // stores id last inserted item
+    const item_id = LAST_INSERT_ID();
+
+    // inserts item_id and season info in junction table
+    await db(
+      `INSERT INTO items_to_seasons (item_id, season_id) VALUES ("${item_id}", "${season_id}");`
+    );
+    
+    // inserts item_id and color info in junction table
+    await db(
+      `INSERT INTO items_to_colors (item_id, color_id) VALUES ("${item_id}", "${color_id}");`
+    );
+
     const { categories } = req.query;
     const { colors } = req.query;
     const { seasons } = req.query;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Season from "./Season.js";
 
+// displays collapsible category checkbox list
 export default function Seasons({
   seasons,
   handleChangeCheckedSeasons,

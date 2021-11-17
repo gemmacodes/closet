@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+// one category checkbox
 export default function Category({
   category,
   handleChangeCheckedCategories,
