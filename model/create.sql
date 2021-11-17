@@ -62,9 +62,9 @@ ALTER TABLE `items_to_colors` ADD CONSTRAINT `items_to_colors_fk0` FOREIGN KEY (
 ALTER TABLE `items_to_colors` ADD CONSTRAINT `items_to_colors_fk1` FOREIGN KEY (`colors_id`) REFERENCES `colors`(`id`);
 
 
-INSERT INTO `categories` (name) VALUES ("coats"), ("jackets"), ("sweatshirts"), ("shirts"), ("t-shirts"), ("jeans"), ("trousers"), ("skirts"), ("shorts"), ("dresses"), ("hats"), ("scarves"), ("bags"), ("shoes");
+INSERT INTO `categories` (name) VALUES ("bags"), ("coats"), ("dresses"), ("hats"), ("jackets"), ("jeans"), ("scarves"), ("shoes"), ("shirts"), ("shorts"), ("skirts"), ("sweatshirts"), ("t-shirts"), ("trousers");
 
-INSERT INTO `colors` (name) VALUES ("red"), ("blue"), ("pink"), ("yellow"), ("brown"), ("purple"), ("black"), ("white"), ("green"), ("orange"), ("gray"), ("beige");
+INSERT INTO `colors` (name) VALUES ("beige"), ("black"), ("blue"), ("brown"), ("green"), ("grey"), ("orange"), ("pink"), ("purple"), ("red"), ("white"), ("yellow");
 
 INSERT INTO `seasons` (name) VALUES ("spring"), ("summer"), ("fall"), ("winter");
 
