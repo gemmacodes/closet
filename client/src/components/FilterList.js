@@ -93,8 +93,8 @@ export default function FilterList({
             id="done-button"
             className={
               mouseOverFormDoneButton
-                ? "active-done-button filter-list-button"
-                : "filter-list-button"
+                ? "active-done-button filter-list-button rounded "
+                : "filter-list-button rounded"
             }
           >
             DONE

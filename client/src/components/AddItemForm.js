@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./AddItemForm.css";
+// import Navbar from "./NavBar";
+
 
 export default function AddItemForm({
   categories,
@@ -10,8 +12,8 @@ export default function AddItemForm({
   checkedStateSeasons,
   setFilteredItems,
 }) {
-  // new item (input) to be posted to DB
-  const [input, setInput] = useState({
+  // new item (newItem) to be posted to DB
+  const [newItem, setNewItem] = useState({
     category_id: 1,
     color_id: 1,
     season_id: 1,
@@ -21,7 +23,7 @@ export default function AddItemForm({
   // changes new item values based on form selectors
   const handleInputChange = (event) => {
     const { value, name } = event.target;
-    setInput((state) => ({ ...state, [name]: value }));
+    setNewItem((state) => ({ ...state, [name]: value }));
   };
 
   // on submit, calls addItem
@@ -48,7 +50,7 @@ export default function AddItemForm({
       .join("&");
 
     try {
-      const { category_id, color_id, season_id, image } = input;
+      const { category_id, color_id, season_id, image } = newItem;
       const response = await fetch(`/api/items/?${filterQueryString}`, {
         method: "POST",
         headers: {
@@ -69,28 +71,32 @@ export default function AddItemForm({
   };
 
   return (
+    <div>
+      {/* <Navbar/> */}
     <form onSubmit={handleSubmit} id="add-item-form">
-      <div>
-        <label id="input-url-container">
-          Add image URL:
+      <div className="justify-contents-between rounded" style={{backgroundColor: "#C0C0C0"}}>
+        <label id="new-item-url-container">
+          Add image URL
           <input
             type="url"
             name="image"
-            value={input.image}
-            id="input-url"
+            value={newItem.image}
+            id="new-item-url"
+            className="form-control"
             onChange={(event) => handleInputChange(event)}
             required
           />
         </label>
-      </div>
+      {/* </div>
 
-      <div>
-        <label id="input-category-container">
-          Select a category:
+      <div> */}
+        <label id="new-item-category-container">
+          Select a category
           <select
             name="category_id"
-            value={input.category_id}
-            id="input-category"
+            className="form-control"
+            value={newItem.category_id}
+            id="new-item-category"
             onChange={(event) => handleInputChange(event)}
             required
           >
@@ -103,16 +109,17 @@ export default function AddItemForm({
             })}
           </select>
         </label>
-      </div>
+      {/* </div>
 
-      <div>
+      <div> */}
         {" "}
-        <label className="item-select" id="input-color-container">
-          Color:
+        <label className="item-select" id="new-item-color-container">
+          Select color/s
           <select
             name="color_id"
-            value={input.color_id}
-            id="input-color"
+            value={newItem.color_id}
+            id="new-item-color"
+            className="form-control"
             onChange={(event) => handleInputChange(event)}
             required
           >
@@ -125,12 +132,13 @@ export default function AddItemForm({
             })}
           </select>
         </label>
-        <label id="input-season-container">
-          Season:
+        <label id="new-item-season-container">
+          Select season/s
           <select
             name="season_id"
-            value={input.season_id}
-            id="input-season"
+            value={newItem.season_id}
+            id="new-item-season"
+            className="form-control"
             onChange={(event) => handleInputChange(event)}
           >
             {seasons.map((season) => {
@@ -142,8 +150,10 @@ export default function AddItemForm({
             })}
           </select>
         </label>
+      {/* </div> */}
+      <button id="submit-button" className="rounded">SUBMIT</button>
       </div>
-      <button id="submit-button">Submit</button>
     </form>
+    </div>
   );
 }

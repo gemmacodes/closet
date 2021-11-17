@@ -55,10 +55,10 @@
 }
 
 .container-checkboxes:hover input ~ .checkmark {
-  background-color: brown;
+  background-color: rgb(63, 50, 50);
 }
 .container-checkboxes input:checked ~ .checkmark {
-  background-color: #2196f3;
+  background-color: #a2d49d;
 }
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
@@ -87,7 +87,7 @@
 #filter-list-button-container {
   margin-top: 3%;
   border-top: 3px solid rgb(7, 7, 7);
-  width: 16%;
+  width: 15%;
 }
 
 .filter-list-button {
@@ -101,7 +101,7 @@
 #reset-button {
   width: 48%;
   text-align: center;
-  background-color: #eee;
+  background-color: #eeeeee;
   color: rgb(179, 160, 160);
 }
 .active-reset-button {
