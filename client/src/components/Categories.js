@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Category from "./Category.js";
-import "./Categories.css";
+// import Category from "./Category.js";
 
 // displays collapsible category checkbox list
 export default function Categories({
   categories,
   handleChangeCheckedCategories,
   checkedStateCategories,
+  isChecked
 }) {
   const [displayFilterListCategories, setDisplayFilterListCategories] =
     useState(false);
@@ -38,14 +38,26 @@ export default function Categories({
       >
         {categories.map((category) => {
           return (
-            <Category
-              category={category}
-              key={`category:${category.id}`}
-              isChecked={checkedStateCategories[category.id]}
-              handleChangeCheckedCategories={() =>
-                handleChangeCheckedCategories(category.id)
-              }
-            ></Category>
+            // <Category
+            //   category={category}
+            //   key={`category:${category.id}`}
+            //   isChecked={checkedStateCategories[category.id]}
+            //   handleChangeCheckedCategories={() =>
+            //     handleChangeCheckedCategories(category.id)
+            //   }
+            // ></Category>
+            <div>
+              <label className="container-checkboxes">
+                {category.name}
+                <input
+                  type="checkbox"
+                  id={`category:${category.id}`}
+                  checked={isChecked}
+                  onChange={handleChangeCheckedCategories}
+                />
+                <span className="checkmark"></span>
+              </label>
+            </div>
           );
         })}
       </div>

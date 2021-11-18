@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import Season from "./Season.js";
+// import Season from "./Season.js";
 
 // displays collapsible category checkbox list
 export default function Seasons({
   seasons,
   handleChangeCheckedSeasons,
   checkedStateSeasons,
+  isChecked
 }) {
   const [displayFilterListSeasons, setDisplayFilterListSeasons] =
     useState(false);
@@ -35,14 +36,26 @@ export default function Seasons({
       <div className={!displayFilterListSeasons ? "collapsible-content" : ""}>
         {seasons.map((season) => {
           return (
-            <Season
-              season={season}
-              key={`season:${season.id}`}
-              handleChangeCheckedSeasons={() =>
-                handleChangeCheckedSeasons(season.id)
-              }
-              isChecked={checkedStateSeasons[season.id]}
-            ></Season>
+            // <Season
+            //   season={season}
+            //   key={`season:${season.id}`}
+            //   handleChangeCheckedSeasons={() =>
+            //     handleChangeCheckedSeasons(season.id)
+            //   }
+            //   isChecked={checkedStateSeasons[season.id]}
+            // ></Season>
+              <div>
+              <label className="container-checkboxes">
+                {season.name}
+                <input
+                  type="checkbox"
+                  id={`season:${season.id}`}
+                  checked={isChecked}
+                  onChange={handleChangeCheckedSeasons}
+                />
+                <span className="checkmark"></span>​
+              </label>
+            </div>            
           );
         })}
       </div>

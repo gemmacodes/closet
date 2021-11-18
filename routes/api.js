@@ -122,14 +122,9 @@ router.get("/items", async function (req, res) {
 // WIP: adds new items to items table on DB
 router.post("/items", async function (req, res) {
   try {
-    // const { category_id, color_id, season_id, image } = req.body;
+    const { category_id, color_ids, season_ids, image } = req.body;
 
-    const { category_id } = req.body;
-    const { color_ids } = req.body;
-    const { season_ids } = req.body;
-    const { image } = req.body;
-
-    // inserts item into DB
+    // inserts item into DB (category_id is only one value)
     await db(
       `INSERT INTO items (category_id, image) VALUES ("${category_id}", "${image}");`
     );
@@ -137,7 +132,7 @@ router.post("/items", async function (req, res) {
     // stores id last inserted item
     const item_id = await db("SELECT id FROM items ORDER BY id DESC LIMIT 1;")
    
-    // inserts item_id and season info in junction table
+    // inserts item_id and season info in junction table (loop because season_ids is an array)
     for(let i=0;i < season_ids.length;i++){
       
       await db(
@@ -145,7 +140,7 @@ router.post("/items", async function (req, res) {
       );
     }
     
-    // inserts item_id and color info in junction table
+    // inserts item_id and color info in junction table (loop because color_ids is an array)
     for(let i=0;i < color_ids.length;i++){
       console.log("it gets here");
     await db(
@@ -222,9 +217,12 @@ router.post("/items", async function (req, res) {
 
 router.delete("/items/:id", async function (req, res) {
   try {
+    //first delete from junction tables
     await db(`DELETE FROM items_to_seasons WHERE item_id = ${+req.params.id};`);
     await db(`DELETE FROM items_to_colors WHERE item_id = ${+req.params.id};`);
+    //then delete from parent table
     await db(`DELETE FROM items WHERE id = ${+req.params.id};`);
+    
     const { categories } = req.query;
     const { colors } = req.query;
     const { seasons } = req.query;
