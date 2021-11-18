@@ -122,7 +122,12 @@ router.get("/items", async function (req, res) {
 // WIP: adds new items to items table on DB
 router.post("/items", async function (req, res) {
   try {
-    const { category_id, color_id, season_id, image } = req.body;
+    // const { category_id, color_id, season_id, image } = req.body;
+
+    const { category_id } = req.body;
+    const { color_ids } = req.body;
+    const { season_ids } = req.body;
+    const { image } = req.body;
 
     // inserts item into DB
     await db(
@@ -130,17 +135,22 @@ router.post("/items", async function (req, res) {
     );
 
     // stores id last inserted item
-    const item_id = LAST_INSERT_ID();
-
+    const item_id = await db("SELECT id FROM items ORDER BY id DESC LIMIT 1;")
+   
     // inserts item_id and season info in junction table
-    await db(
-      `INSERT INTO items_to_seasons (item_id, season_id) VALUES ("${item_id}", "${season_id}");`
-    );
+    for(let i=0;i < season_ids.length;i++){
+      
+      await db(
+        `INSERT INTO items_to_seasons (item_id, season_id) VALUES ("${item_id.data[0].id}", "${season_ids[i]}");`
+      );
+    }
     
     // inserts item_id and color info in junction table
+    for(let i=0;i < color_ids.length;i++){
+      console.log("it gets here");
     await db(
-      `INSERT INTO items_to_colors (item_id, color_id) VALUES ("${item_id}", "${color_id}");`
-    );
+      `INSERT INTO items_to_colors (item_id, color_id) VALUES ("${item_id.data[0].id}", "${color_ids[i]}");`
+    )};
 
     const { categories } = req.query;
     const { colors } = req.query;
@@ -148,12 +158,22 @@ router.post("/items", async function (req, res) {
 
     let results = null;
 
+    // if no filters are selected, all items are returned
     if (
       (!categories || !categories.length) &&
       (!colors || !colors.length) &&
       (!seasons || !seasons.length)
     ) {
-      results = await db("SELECT * FROM items ORDER BY id ASC;");
+      results = await db("SELECT * FROM items ORDER BY id ASC;");  
+
+    // if all filters are selected, items are selected according to those
+    } else if (categories && colors && seasons) {
+      const categoriesJoined = categories.join(",");
+      const colorsJoined = colors.join(",");
+      const seasonsJoined = seasons.join(",");
+      results = await db(
+        `SELECT * FROM items WHERE (category_id) IN (${categoriesJoined}) AND (color_id) IN (${colorsJoined}) AND (season_id) IN (${seasonsJoined});`
+      );
     } else if (categories && colors) {
       const categoriesJoined = categories.join(",");
       const colorsJoined = colors.join(",");
@@ -192,13 +212,6 @@ router.post("/items", async function (req, res) {
       const seasonsJoined = seasons.join(",");
       results = await db(
         `SELECT * FROM items WHERE (season_id) IN (${seasonsJoined});`
-      );
-    } else {
-      const categoriesJoined = categories.join(",");
-      const colorsJoined = colors.join(",");
-      const seasonsJoined = seasons.join(",");
-      results = await db(
-        `SELECT * FROM items WHERE (category_id) IN (${categoriesJoined}) AND (color_id) IN (${colorsJoined} AND (season_id) IN (${seasonsJoined});`
       );
     }
     res.status(201).send(results.data);
@@ -207,21 +220,33 @@ router.post("/items", async function (req, res) {
   }
 });
 
-router.delete("/items/:item_id", async function (req, res) {
+router.delete("/items/:id", async function (req, res) {
   try {
-    await db(`DELETE FROM items WHERE id = ${+req.params.item_id};`);
+    await db(`DELETE FROM items_to_seasons WHERE item_id = ${+req.params.id};`);
+    await db(`DELETE FROM items_to_colors WHERE item_id = ${+req.params.id};`);
+    await db(`DELETE FROM items WHERE id = ${+req.params.id};`);
     const { categories } = req.query;
     const { colors } = req.query;
     const { seasons } = req.query;
 
     let results = null;
 
+    // if no filters are selected, all items are returned
     if (
       (!categories || !categories.length) &&
       (!colors || !colors.length) &&
       (!seasons || !seasons.length)
     ) {
-      results = await db("SELECT * FROM items ORDER BY id ASC;");
+      results = await db("SELECT * FROM items ORDER BY id ASC;");  
+
+    // if all filters are selected, items are selected according to those
+    } else if (categories && colors && seasons) {
+      const categoriesJoined = categories.join(",");
+      const colorsJoined = colors.join(",");
+      const seasonsJoined = seasons.join(",");
+      results = await db(
+        `SELECT * FROM items WHERE (category_id) IN (${categoriesJoined}) AND (color_id) IN (${colorsJoined}) AND (season_id) IN (${seasonsJoined});`
+      );
     } else if (categories && colors) {
       const categoriesJoined = categories.join(",");
       const colorsJoined = colors.join(",");
@@ -260,13 +285,6 @@ router.delete("/items/:item_id", async function (req, res) {
       const seasonsJoined = seasons.join(",");
       results = await db(
         `SELECT * FROM items WHERE (season_id) IN (${seasonsJoined});`
-      );
-    } else {
-      const categoriesJoined = categories.join(",");
-      const colorsJoined = colors.join(",");
-      const seasonsJoined = seasons.join(",");
-      results = await db(
-        `SELECT * FROM items WHERE (category_id) IN (${categoriesJoined}) AND (color_id) IN (${colorsJoined} AND (season_id) IN (${seasonsJoined});`
       );
     }
 

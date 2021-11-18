@@ -32,7 +32,7 @@ export default function AddItemForm({
     addItem();
   };
 
-  // creates query and posts new item to DB. returns
+  // NEEDS FIXING!!  creates query and posts new item to DB. returns
   const addItem = async () => {
     const filterQueryString = Object.keys(checkedStateCategories)
       .filter((category) => checkedStateCategories[category])

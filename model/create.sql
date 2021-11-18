@@ -12,8 +12,8 @@ DROP TABLE if exists `items_to_colors`;
 
 CREATE TABLE `items_to_colors` (
 	`item_id` INT NOT NULL,
-	`colors_id` INT NOT NULL,
-	PRIMARY KEY (`item_id`,`colors_id`)
+	`color_id` INT NOT NULL,
+	PRIMARY KEY (`item_id`,`color_id`)
 );
 
 DROP TABLE if exists `items`;
@@ -59,7 +59,7 @@ ALTER TABLE `items_to_seasons` ADD CONSTRAINT `items_to_seasons_fk1` FOREIGN KEY
 
 ALTER TABLE `items_to_colors` ADD CONSTRAINT `items_to_colors_fk0` FOREIGN KEY (`item_id`) REFERENCES `items`(`id`);
 
-ALTER TABLE `items_to_colors` ADD CONSTRAINT `items_to_colors_fk1` FOREIGN KEY (`colors_id`) REFERENCES `colors`(`id`);
+ALTER TABLE `items_to_colors` ADD CONSTRAINT `items_to_colors_fk1` FOREIGN KEY (`color_id`) REFERENCES `colors`(`id`);
 
 
 INSERT INTO `categories` (name) VALUES ("bags"), ("coats"), ("dresses"), ("hats"), ("jackets"), ("jeans"), ("scarves"), ("shoes"), ("shirts"), ("shorts"), ("skirts"), ("sweatshirts"), ("t-shirts"), ("trousers");
