@@ -49,7 +49,9 @@ export default function Colors({
               <input
                 type="checkbox"
                 id={`color:${color.id}`}
-                checked={isChecked}
+                name="color"
+                value={color.id}
+                checked={"color" === color.id ? true : false}
                 onChange={handleChangeCheckedColors}
               />
               <span className="checkmark"></span>​
