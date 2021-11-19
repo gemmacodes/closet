@@ -14,7 +14,7 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       }
-    );
+    )
   },
 
   down: (queryInterface, Sequelize) => {
