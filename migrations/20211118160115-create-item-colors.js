@@ -10,6 +10,8 @@ module.exports = {
           key: "id",
         },
         allowNull: false,
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       ColorId: {
         type: Sequelize.INTEGER,
@@ -18,6 +20,8 @@ module.exports = {
           key: "id",
         },
         allowNull: false,
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,

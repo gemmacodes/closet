@@ -10,14 +10,18 @@ module.exports = {
           key: "id",
         },
         allowNull: false,
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      ColorId: {
+      SeasonId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Seasons",
           key: "id",
         },
         allowNull: false,
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,
