@@ -2,8 +2,6 @@ var express = require("express");
 var router = express.Router();
 const db = require("../model/helper");
 var models = require("../models");
-const { Sequelize } = require('sequelize');
-
 
 // WORKS: gets all items with color AND season
 router.get("/all", async function (req, res) {
@@ -24,9 +22,19 @@ router.get("/all", async function (req, res) {
   }
 });
 
-// WORKS? gets items from a given category AND color AND season
+// WORKS!!! gets items from a given category AND color AND season
 router.get("/", async function (req, res) {
+  try {
+    const items = await getFilteredItems(req);
+    res.send(items);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 
+});
+
+
+async function getFilteredItems(req) {
   try {
     const { categories, colors, seasons } = req.query;
     let selectedCategories = [];
@@ -57,7 +65,7 @@ router.get("/", async function (req, res) {
     } else {selectedSeasons = seasons.split(",")};
 
     if (!colors) { 
-      const seasonList = await models.Color.findAll(
+      const colorList = await models.Color.findAll(
         {
           attributes: ['id']
         }
@@ -94,22 +102,22 @@ router.get("/", async function (req, res) {
     ]
     });
 
-    res.send(items);
+    return items;
     
   } catch (error) {
     res.status(500).send(error);
   }
-});
+};
 
 
 // WORKS! adds new items to items table on DB; returns new item
 router.post("/", async function (req, res) {
   try {
-    const { category_id, color_ids, season_ids, image } = req.body;
+    const { categoryId, colorIds, seasonIds, image } = req.body;
   
-    const item = await models.Item.create({ image: image, CategoryId: category_id })
-    if (season_ids) await item.setSeasons(season_ids) //season_ids is expected to be an ARRAY
-    if (color_ids) await item.setColors(color_ids)
+    const item = await models.Item.create({ image: image, CategoryId: categoryId })
+    if (seasonIds) await item.setSeasons(seasonIds) //season_ids is expected to be an ARRAY
+    if (colorIds) await item.setColors(colorIds)
     res.status(201).send(item);
 
   } catch (error) {
@@ -117,22 +125,23 @@ router.post("/", async function (req, res) {
   }
 });
 
-// WIP! WORKS deletes item by id; returns ????
+// WORKS! deletes item by id; returns filtered items
 router.delete("/:id", async function (req, res) {
   try {
-      const { id } = req.params;
+    const { id } = req.params;
 
-      await models.Item.destroy({
-        where: {
-          id,
-        },
-      });
-    
-      res.send("Deleted!");
+    await models.Item.destroy({
+      where: {
+        id,
+      },
+    });
+
+    const items = await getFilteredItems(req);
+    res.send(items);
   
-    } catch (error) {
-      res.status(500).send(error);
-    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 module.exports = router;

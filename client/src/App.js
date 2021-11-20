@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import FilterList from "./components/FilterList.js";
 import Item from "./components/Item.js";
 import AddItemForm from "./components/AddItemForm";
-// import Navbar from "./components/NavBar";
+import Navbar from "./components/NavBar";
 
 function App() {
-  const [colors, setColors] = useState([]);
+  const [colors, setColors] = useState([]); // [{id: 1, name: "red", isChecked: false},...]
   const [seasons, setSeasons] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -26,11 +26,12 @@ function App() {
  
   // on page load, populate colors, seasons, categories and filteredItems arrays  
   useEffect(() => {
-    getColors();
+    getColors();  
     getSeasons();
     getCategories();
     getFilteredItems();
   }, [checkedStateCategories, checkedStateColors, checkedStateSeasons]);
+
 
   // populates categories (array of objects) ex. [ {id:1, name:"bags"}, ...]
   const getCategories = () => {
@@ -46,7 +47,7 @@ function App() {
 
   // populates colors (array of objects) ex. [ {id:1, name:"beige"}, ...]
   const getColors = () => {
-    fetch("/api/colors")
+    fetch("/colors")
       .then((response) => response.json())
       .then((response) => {
         setColors(response);
@@ -58,7 +59,7 @@ function App() {
 
   // populates seasons (array of objects) ex. [ {id:1, name:"spring"}, ...]
   const getSeasons = () => {
-    fetch("/api/seasons")
+    fetch("/seasons")
       .then((response) => response.json())
       .then((response) => {
         setSeasons(response);
@@ -86,7 +87,7 @@ function App() {
       }
     }
 
-    fetch(`/api/items/?${filterQueryString}`)
+    fetch(`/items/?${filterQueryString}`)
       .then((response) => response.json())
       .then((items) => {
         setFilteredItems(items);
@@ -96,7 +97,7 @@ function App() {
       });
   };
 
-  const handleChangeCheckbox = (categoryId) => {
+  const handleChangeCheckboxes = (categoryId) => {
     if (!checkedStateCategories[categoryId]) {
       setCheckedStateCategories((state) => ({ ...state, [categoryId]: true }));
     } else {
@@ -128,19 +129,19 @@ function App() {
   //   }
   // };
 
-  // const handleChangeCheckbox = (name, id) => {
-  //   switch (name){
-  //     case 'season':
-  //       setSeasons((season) => ({...season[id], [checked] : true}));
-  //     break;
-  //     case 'color':
-  //       setColors((color) => ({...color[id], [checked] : true}));
-  //     break;
-  //     case 'category':
-  //       setCategories((category) => ({...category[id], [checked] : true}));
-  //     break;
-  //   }
-  // };
+  const handleChangeCheckbox = (name, id) => {
+    switch (name){
+      case 'season':
+        setSeasons((season) => ({...season[id], isChecked : true}));
+      break;
+      case 'color':
+        setColors((color) => ({...color[id], isChecked : true}));
+      break;
+      case 'category':
+        setCategories((category) => ({...category[id], isChecked : true}));
+      break;
+    }
+  };
 
   const deleteItem = (id) => {
     let filterQueryString = "";
@@ -159,7 +160,7 @@ function App() {
         filterQueryString += `seasons[]=${property}&`;
       }
     }
-    fetch(`/api/items/${id}/?${filterQueryString}`, {
+    fetch(`/items/${id}/?${filterQueryString}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -175,15 +176,15 @@ function App() {
 
   return (
     <div>
-      {/* <Navbar/> */}
-      {/* <h1>My closet</h1> */}
-      <div className="text-center mt-4">
+      <div className="mb-3"><Navbar/></div>
+
+      {/* <div className="text-center mt-4">
         <img src="https://cdn-icons.flaticon.com/png/512/3959/premium/3959060.png?token=exp=1637183899~hmac=ad944934feb2fb770d15419cb102b684" width="60" height="60" class="d-inline-block" alt="my closet logo"/>
         <br/>
         <a className="h1" style={{textDecoration: 'none' }} href="/">My closet</a>
-      </div>
+      </div> */}
 
-      <div className="row">
+      {/* <div className="row">
       <AddItemForm
         categories={categories}
         colors={colors}
@@ -193,11 +194,11 @@ function App() {
         checkedStateSeasons={checkedStateSeasons}
         setFilteredItems={setFilteredItems}
       />
-      </div>
+      </div> */}
 
       <div id="filter-and-items-container">
         <div id="filterContainer">
-          <FilterList
+          {/* <FilterList
             categories={categories}
             checkedStateCategories={checkedStateCategories}
             handleChangeCheckedCategories={(categoryId) =>
@@ -214,7 +215,7 @@ function App() {
               handleChangeCheckedSeasons(seasonId)
             }
             handleClickResetForm={handleClickResetForm}
-          ></FilterList>
+          ></FilterList> */}
         </div>
         <div id="itemsContainer">
           {filteredItems.map((item) => {
@@ -222,7 +223,7 @@ function App() {
               <Item
                 item={item}
                 key={item.id}
-                onClick={(id) => deleteItem(id)} //why not item.id?
+                onClick={(id) => deleteItem(id)} 
               ></Item>
             );
           })}
