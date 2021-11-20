@@ -8,14 +8,15 @@ import "./FilterList.css";
 
 export default function FilterList({
   categories,
-  checkedStateCategories,
-  handleChangeCheckedCategories,
+  // checkedStateCategories,
+  // handleChangeCheckedCategories,
   colors,
-  checkedStateColors,
-  handleChangeCheckedColors,
+  // checkedStateColors,
+  // handleChangeCheckedColors,
   seasons,
-  checkedStateSeasons,
-  handleChangeCheckedSeasons,
+  // checkedStateSeasons,
+  // handleChangeCheckedSeasons,
+  handleChangeCheckbox,
   handleClickResetForm,
 }) {
   const [displayFilterList, setDisplayFilterList] = useState(false);
@@ -52,26 +53,17 @@ export default function FilterList({
       >
         <Categories
           categories={categories}
-          handleChangeCheckedCategories={(categoryId) =>
-            handleChangeCheckedCategories(categoryId)
-          }
-          checkedStateCategories={checkedStateCategories}
+          handleChangeCheckbox={handleChangeCheckbox}
         ></Categories>
         <Colors
           colors={colors}
-          handleChangeCheckedColors={(colorId) =>
-            handleChangeCheckedColors(colorId)
-          }
-          checkedStateColors={checkedStateColors}
+          handleChangeCheckbox={handleChangeCheckbox}
         ></Colors>
         <Seasons
           seasons={seasons}
-          handleChangeCheckedSeasons={(seasonId) =>
-            handleChangeCheckedSeasons(seasonId)
-          }
-          checkedStateSeasons={checkedStateSeasons}
+          handleChangeCheckbox={handleChangeCheckbox}
         ></Seasons>
-        <div id="filter-list-button-container">
+        {/* <div id="filter-list-button-container">
           <button
             type="reset"
             id="reset-button"
@@ -99,7 +91,7 @@ export default function FilterList({
           >
             DONE
           </button>
-        </div>
+        </div> */}
       </form>
     </div>
   );

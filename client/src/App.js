@@ -2,7 +2,6 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import FilterList from "./components/FilterList.js";
 import Item from "./components/Item.js";
-import AddItemForm from "./components/AddItemForm";
 import Navbar from "./components/NavBar";
 
 function App() {
@@ -12,9 +11,9 @@ function App() {
 
   const [filteredItems, setFilteredItems] = useState([]);
 
-  const [checkedStateCategories, setCheckedStateCategories] = useState({});
-  const [checkedStateColors, setCheckedStateColors] = useState({});
-  const [checkedStateSeasons, setCheckedStateSeasons] = useState({});
+  // const [checkedStateCategories, setCheckedStateCategories] = useState({});
+  // const [checkedStateColors, setCheckedStateColors] = useState({});
+  // const [checkedStateSeasons, setCheckedStateSeasons] = useState({});
 
   // this is an idea I had, instead of storing the 3 checkedStates in 3 different empty objects, do it in only one object containing that properties
   // const [checkedStateFilters, setCheckedStateFilters] = useState({
@@ -30,15 +29,16 @@ function App() {
     getSeasons();
     getCategories();
     getFilteredItems();
-  }, [checkedStateCategories, checkedStateColors, checkedStateSeasons]);
+  }, []);
 
 
   // populates categories (array of objects) ex. [ {id:1, name:"bags"}, ...]
   const getCategories = () => {
-    fetch("/api/categories")
+    fetch("/categories")
       .then((response) => response.json())
       .then((response) => {
         setCategories(response);
+        setCategories((categories) => (categories.map((category) => ({...category, isChecked : false}))));
       })
       .catch((error) => {
         console.log(error);
@@ -51,6 +51,7 @@ function App() {
       .then((response) => response.json())
       .then((response) => {
         setColors(response);
+        setColors((colors) => (colors.map((color) => ({...color, isChecked : false}))));
       })
       .catch((error) => {
         console.log(error);
@@ -63,6 +64,7 @@ function App() {
       .then((response) => response.json())
       .then((response) => {
         setSeasons(response);
+        setSeasons((seasons) => (seasons.map((season) => ({...season, isChecked : false}))));
       })
       .catch((error) => {
         console.log(error);
@@ -70,24 +72,21 @@ function App() {
   };
 
   const getFilteredItems = () => {
-    let filterQueryString = "";
-    for (const property in checkedStateCategories) {
-      if (checkedStateCategories[property]) {
-        filterQueryString += `categories[]=${property}&`;
-      }
-    }
-    for (const property in checkedStateColors) {
-      if (checkedStateColors[property]) {
-        filterQueryString += `colors[]=${property}&`;
-      }
-    }
-    for (const property in checkedStateSeasons) {
-      if (checkedStateSeasons[property]) {
-        filterQueryString += `seasons[]=${property}&`;
-      }
-    }
 
-    fetch(`/items/?${filterQueryString}`)
+    const selectedCategoriesIds = categories.filter(category => category.isChecked).map(category => category.id).join(","); 
+    const selectedColorsIds = colors.filter(color => color.isChecked).map(color => color.id).join(",");
+    const selectedSeasonsIds = seasons.filter(season => season.isChecked).map(season => season.id).join(",");
+
+    let filterQuery = [];
+    
+    if (selectedCategoriesIds.length !== 0) filterQuery.push(`categories=${selectedCategoriesIds}`);
+    if (selectedColorsIds.length !== 0) filterQuery.push(`colors=${selectedColorsIds}`);
+    if (selectedSeasonsIds.length !== 0) filterQuery.push(`seasons=${selectedSeasonsIds}`);
+
+    let filterQueryString = filterQuery.length !== 0 ? `?${filterQuery.join("&")}`: "all";
+    
+
+    fetch(`/items/${filterQueryString}`) //?categories=1,2,3&seasons=1,2
       .then((response) => response.json())
       .then((items) => {
         setFilteredItems(items);
@@ -97,82 +96,51 @@ function App() {
       });
   };
 
-  const handleChangeCheckboxes = (categoryId) => {
-    if (!checkedStateCategories[categoryId]) {
-      setCheckedStateCategories((state) => ({ ...state, [categoryId]: true }));
-    } else {
-      setCheckedStateCategories((state) => ({ ...state, [categoryId]: false }));
-    }
-  };
-
-  // const handleChangeCheckedCategories = (categoryId) => {
-  //   if (!checkedStateCategories[categoryId]) {
-  //     setCheckedStateCategories((state) => ({ ...state, [categoryId]: true }));
-  //   } else {
-  //     setCheckedStateCategories((state) => ({ ...state, [categoryId]: false }));
-  //   }
-  // };
-
-  // const handleChangeCheckedColors = (colorId) => {
-  //   if (!checkedStateColors[colorId]) {
-  //     setCheckedStateColors((state) => ({ ...state, [colorId]: true }));
-  //   } else {
-  //     setCheckedStateColors((state) => ({ ...state, [colorId]: false }));
-  //   }
-  // };
-
-  // const handleChangeCheckedSeasons = (seasonId) => {
-  //   if (!checkedStateSeasons[seasonId]) {
-  //     setCheckedStateSeasons((state) => ({ ...state, [seasonId]: true }));
-  //   } else {
-  //     setCheckedStateSeasons((state) => ({ ...state, [seasonId]: false }));
-  //   }
-  // };
-
   const handleChangeCheckbox = (name, id) => {
     switch (name){
       case 'season':
-        setSeasons((season) => ({...season[id], isChecked : true}));
+        setSeasons((seasons) => (seasons.map(season => (season.id === id ? {...season, isChecked : !season.isChecked} : season))));
       break;
       case 'color':
-        setColors((color) => ({...color[id], isChecked : true}));
+        setColors((colors) => (colors.map(color => (color.id === id ? {...color, isChecked : !color.isChecked} : color))));
       break;
       case 'category':
-        setCategories((category) => ({...category[id], isChecked : true}));
+        setCategories((categories) => (categories.map(category => (category.id === id ? {...category, isChecked : !category.isChecked} : category))));
       break;
     }
+    getFilteredItems();
   };
 
-  const deleteItem = (id) => {
-    let filterQueryString = "";
-    for (const property in checkedStateCategories) {
-      if (checkedStateCategories[property]) {
-        filterQueryString += `categories[]=${property}&`;
-      }
-    }
-    for (const property in checkedStateColors) {
-      if (checkedStateColors[property]) {
-        filterQueryString += `colors[]=${property}&`;
-      }
-    }
-    for (const property in checkedStateSeasons) {
-      if (checkedStateSeasons[property]) {
-        filterQueryString += `seasons[]=${property}&`;
-      }
-    }
-    fetch(`/items/${id}/?${filterQueryString}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => setFilteredItems(data));
-  };
+  // const deleteItem = (id) => {
+  //   let filterQueryString = "";
+  //   for (const property in checkedStateCategories) {
+  //     if (checkedStateCategories[property]) {
+  //       filterQueryString += `categories[]=${property}&`;
+  //     }
+  //   }
+  //   for (const property in checkedStateColors) {
+  //     if (checkedStateColors[property]) {
+  //       filterQueryString += `colors[]=${property}&`;
+  //     }
+  //   }
+  //   for (const property in checkedStateSeasons) {
+  //     if (checkedStateSeasons[property]) {
+  //       filterQueryString += `seasons[]=${property}&`;
+  //     }
+  //   }
+  //   fetch(`/items/${id}/?${filterQueryString}`, {
+  //     method: "DELETE",
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => setFilteredItems(data));
+  // };
 
-  const handleClickResetForm = (event) => {
-    event.preventDefault();
-    setCheckedStateCategories({});
-    setCheckedStateColors({});
-    setCheckedStateSeasons({});
-  };
+  // const handleClickResetForm = (event) => {
+  //   event.preventDefault();
+  //   setCheckedStateCategories({});
+  //   setCheckedStateColors({});
+  //   setCheckedStateSeasons({});
+  // };
 
   return (
     <div>
@@ -184,38 +152,15 @@ function App() {
         <a className="h1" style={{textDecoration: 'none' }} href="/">My closet</a>
       </div> */}
 
-      {/* <div className="row">
-      <AddItemForm
-        categories={categories}
-        colors={colors}
-        seasons={seasons}
-        checkedStateCategories={checkedStateCategories}
-        checkedStateColors={checkedStateColors}
-        checkedStateSeasons={checkedStateSeasons}
-        setFilteredItems={setFilteredItems}
-      />
-      </div> */}
-
       <div id="filter-and-items-container">
         <div id="filterContainer">
-          {/* <FilterList
+          <FilterList
             categories={categories}
-            checkedStateCategories={checkedStateCategories}
-            handleChangeCheckedCategories={(categoryId) =>
-              handleChangeCheckedCategories(categoryId)
-            }
             colors={colors}
-            checkedStateColors={checkedStateColors}
-            handleChangeCheckedColors={(colorId) =>
-              handleChangeCheckedColors(colorId)
-            }
             seasons={seasons}
-            checkedStateSeasons={checkedStateSeasons}
-            handleChangeCheckedSeasons={(seasonId) =>
-              handleChangeCheckedSeasons(seasonId)
-            }
-            handleClickResetForm={handleClickResetForm}
-          ></FilterList> */}
+            handleChangeCheckbox={handleChangeCheckbox}
+            // handleClickResetForm={handleClickResetForm}
+          ></FilterList>
         </div>
         <div id="itemsContainer">
           {filteredItems.map((item) => {
@@ -223,7 +168,7 @@ function App() {
               <Item
                 item={item}
                 key={item.id}
-                onClick={(id) => deleteItem(id)} 
+                // onClick={(id) => deleteItem(id)} 
               ></Item>
             );
           })}

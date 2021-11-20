@@ -3,10 +3,7 @@ import React, { useState } from "react";
 
 // displays collapsible category checkbox list
 export default function Seasons({
-  seasons,
-  handleChangeCheckedSeasons,
-  checkedStateSeasons,
-  isChecked
+  seasons,handleChangeCheckbox
 }) {
   const [displayFilterListSeasons, setDisplayFilterListSeasons] =
     useState(false);
@@ -50,8 +47,8 @@ export default function Seasons({
                 <input
                   type="checkbox"
                   id={`season:${season.id}`}
-                  checked={isChecked}
-                  onChange={handleChangeCheckedSeasons}
+                  value={season.id}
+                  onChange={() => {handleChangeCheckbox("season", season.id)}}
                 />
                 <span className="checkmark"></span>​
               </label>

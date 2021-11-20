@@ -1,19 +1,17 @@
 import React, { useState } from "react";
-// import Color from "./Color.js";
 
 // displays collapsible color checkbox list
 export default function Colors({
-  colors,
-  handleChangeCheckedColors,
-  checkedStateColors,
-  isChecked
+  colors, handleChangeCheckbox
 }) {
+
   const [displayFilterListColors, setDisplayFilterListColors] = useState(false);
   const [mouseOverFilterColors, setMouseOverFilterColors] = useState(false);
 
   const handleClickDisplayFilterColors = () => {
     setDisplayFilterListColors(!displayFilterListColors);
   };
+
 
   return (
     <div>
@@ -33,16 +31,8 @@ export default function Colors({
         Colors
       </button>
       <div className={!displayFilterListColors ? "collapsible-content" : ""}>
-        {colors.map((color) => {
+        {colors && colors.map((color) => {
           return (
-            // <Color
-            //   color={color}
-            //   key={`color:${color.id}`}
-            //   handleChangeCheckedColors={() =>
-            //     handleChangeCheckedColors(color.id)
-            //   }
-            //   isChecked={checkedStateColors[color.id]}
-            // ></Color>
             <div>
             <label className="container-checkboxes">
               {color.name}
@@ -51,8 +41,7 @@ export default function Colors({
                 id={`color:${color.id}`}
                 name="color"
                 value={color.id}
-                checked={"color" === color.id ? true : false}
-                onChange={handleChangeCheckedColors}
+                onChange={() => {handleChangeCheckbox("color", color.id)}}
               />
               <span className="checkmark"></span>​
             </label>
