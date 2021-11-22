@@ -8,16 +8,18 @@
 
 .collapsible-button {
   padding: 1%;
+  margin-bottom: 1%;
   width: 15%;
   text-align: left;
   font-size: 110%;
   border: none;
-  background-color: #eee;
+  background-color: #C0C0C0;
   color: rgb(61, 47, 47);
+  border-radius: 5px;
 }
 
 .active-collapsible-button {
-  background-color: #c0c0c0;
+  background-color: #eeeeee;
 }
 
 .collapsible-content {

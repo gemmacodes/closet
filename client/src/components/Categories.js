@@ -36,11 +36,12 @@ export default function Categories({
         {categories.map((category) => {
           return (
             <div>
-              <label className="container-checkboxes">
+              <label className="container-checkboxes"> 
                 {category.name}
                 <input
                   type="checkbox"
                   id={`category:${category.id}`}
+                  key={category.id}
                   value={category.id}
                   onChange={() => {handleChangeCheckbox("category", category.id)}}
                 />

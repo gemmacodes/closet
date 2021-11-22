@@ -29,8 +29,8 @@ export default function FilterList({
   };
 
   return (
-    <div id="filter-list">
-      <div>
+    <div id="filter-list" className="mt-5">
+      {/* <div>
         {displayFilterList ? (
           <img
             src={CloseSortIcon}
@@ -46,11 +46,13 @@ export default function FilterList({
             className="icon-sorted-list"
           />
         )}
-      </div>
+      </div> */}
+
       <form
         onReset={handleClickResetForm}
-        className={!displayFilterList ? "hidden-content-list" : ""}
+        // className={!displayFilterList ? "hidden-content-list" : ""}
       >
+        <p>Search by...</p>
         <Categories
           categories={categories}
           handleChangeCheckbox={handleChangeCheckbox}
@@ -63,7 +65,7 @@ export default function FilterList({
           seasons={seasons}
           handleChangeCheckbox={handleChangeCheckbox}
         ></Seasons>
-        {/* <div id="filter-list-button-container">
+        <div id="filter-list-button-container">
           <button
             type="reset"
             id="reset-button"
@@ -91,7 +93,7 @@ export default function FilterList({
           >
             DONE
           </button>
-        </div> */}
+        </div>
       </form>
     </div>
   );

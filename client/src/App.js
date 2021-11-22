@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import FilterList from "./components/FilterList.js";
 import Item from "./components/Item.js";
 import Navbar from "./components/NavBar";
+import Masonry from 'react-masonry-css'
 
 function App() {
   const [colors, setColors] = useState([]); // [{id: 1, name: "red", isChecked: false},...]
@@ -28,8 +29,11 @@ function App() {
     getColors();  
     getSeasons();
     getCategories();
-    getFilteredItems();
   }, []);
+
+  useEffect(() => {
+    getFilteredItems();
+  }, [colors, seasons, categories]);
 
 
   // populates categories (array of objects) ex. [ {id:1, name:"bags"}, ...]
@@ -37,8 +41,7 @@ function App() {
     fetch("/categories")
       .then((response) => response.json())
       .then((response) => {
-        setCategories(response);
-        setCategories((categories) => (categories.map((category) => ({...category, isChecked : false}))));
+        setCategories(response.map((category) => ({...category, isChecked : false})));
       })
       .catch((error) => {
         console.log(error);
@@ -50,8 +53,7 @@ function App() {
     fetch("/colors")
       .then((response) => response.json())
       .then((response) => {
-        setColors(response);
-        setColors((colors) => (colors.map((color) => ({...color, isChecked : false}))));
+        setColors(response.map((color) => ({...color, isChecked : false})));
       })
       .catch((error) => {
         console.log(error);
@@ -63,30 +65,33 @@ function App() {
     fetch("/seasons")
       .then((response) => response.json())
       .then((response) => {
-        setSeasons(response);
-        setSeasons((seasons) => (seasons.map((season) => ({...season, isChecked : false}))));
+        setSeasons(response.map((season) => ({...season, isChecked : false})));
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const getFilteredItems = () => {
+  function getFilteredItems() {
 
     const selectedCategoriesIds = categories.filter(category => category.isChecked).map(category => category.id).join(","); 
     const selectedColorsIds = colors.filter(color => color.isChecked).map(color => color.id).join(",");
     const selectedSeasonsIds = seasons.filter(season => season.isChecked).map(season => season.id).join(",");
 
-    let filterQuery = [];
-    
-    if (selectedCategoriesIds.length !== 0) filterQuery.push(`categories=${selectedCategoriesIds}`);
-    if (selectedColorsIds.length !== 0) filterQuery.push(`colors=${selectedColorsIds}`);
-    if (selectedSeasonsIds.length !== 0) filterQuery.push(`seasons=${selectedSeasonsIds}`);
+    const query = {}; // this object can have up to 3 properties {categories, colors, seasons}. eg. {"1,2,3", "2", "3,4"}
 
-    let filterQueryString = filterQuery.length !== 0 ? `?${filterQuery.join("&")}`: "all";
-    
+    if (selectedCategoriesIds.length !== 0) query.categories = selectedCategoriesIds; // eg. {"1,2,3"}
+    if (selectedColorsIds.length !== 0) query.colors = selectedColorsIds;
+    if (selectedSeasonsIds.length !== 0) query.seasons = selectedSeasonsIds;
 
-    fetch(`/items/${filterQueryString}`) //?categories=1,2,3&seasons=1,2
+    const finalQuery = []
+    for (const key in query) {
+        finalQuery.push( `${key}=${query[key]}`)  // eg. ["categories=1,2,3", "colors=2", "seasons=3,4"]
+    }
+
+    const filterQueryString = finalQuery.length !== 0 ? `?${finalQuery.join("&")}`: "all"; // eg. "?categories=1,2,3&colors=2&seasons=3,4"
+
+    fetch(`/items/${filterQueryString}`) 
       .then((response) => response.json())
       .then((items) => {
         setFilteredItems(items);
@@ -108,32 +113,33 @@ function App() {
         setCategories((categories) => (categories.map(category => (category.id === id ? {...category, isChecked : !category.isChecked} : category))));
       break;
     }
-    getFilteredItems();
   };
 
-  // const deleteItem = (id) => {
-  //   let filterQueryString = "";
-  //   for (const property in checkedStateCategories) {
-  //     if (checkedStateCategories[property]) {
-  //       filterQueryString += `categories[]=${property}&`;
-  //     }
-  //   }
-  //   for (const property in checkedStateColors) {
-  //     if (checkedStateColors[property]) {
-  //       filterQueryString += `colors[]=${property}&`;
-  //     }
-  //   }
-  //   for (const property in checkedStateSeasons) {
-  //     if (checkedStateSeasons[property]) {
-  //       filterQueryString += `seasons[]=${property}&`;
-  //     }
-  //   }
-  //   fetch(`/items/${id}/?${filterQueryString}`, {
-  //     method: "DELETE",
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => setFilteredItems(data));
-  // };
+
+  const deleteItem = (id) => {
+    const selectedCategoriesIds = categories.filter(category => category.isChecked).map(category => category.id).join(","); 
+    const selectedColorsIds = colors.filter(color => color.isChecked).map(color => color.id).join(",");
+    const selectedSeasonsIds = seasons.filter(season => season.isChecked).map(season => season.id).join(",");
+
+    const query = {}; // this object can have up to 3 properties {categories, colors, seasons}. eg. {"1,2,3", "2", "3,4"}
+
+    if (selectedCategoriesIds.length !== 0) query.categories = selectedCategoriesIds; // eg. {"1,2,3"}
+    if (selectedColorsIds.length !== 0) query.colors = selectedColorsIds;
+    if (selectedSeasonsIds.length !== 0) query.seasons = selectedSeasonsIds;
+
+    const finalQuery = []
+    for (const key in query) {
+        finalQuery.push( `${key}=${query[key]}`)  // eg. ["categories=1,2,3", "colors=2", "seasons=3,4"]
+    }
+
+    const filterQueryString = finalQuery.length !== 0 ? `?${finalQuery.join("&")}`: "all"; // eg. "?categories=1,2,3&colors=2&seasons=3,4"
+    
+    fetch(`/items/${id}/${filterQueryString}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => setFilteredItems(data));
+  };
 
   // const handleClickResetForm = (event) => {
   //   event.preventDefault();
@@ -152,8 +158,9 @@ function App() {
         <a className="h1" style={{textDecoration: 'none' }} href="/">My closet</a>
       </div> */}
 
-      <div id="filter-and-items-container">
-        <div id="filterContainer">
+      <div className="container">
+      <div id="filter-and-items-container" className="row">
+        <div id="filterContainer" className="col-3-md">
           <FilterList
             categories={categories}
             colors={colors}
@@ -162,17 +169,18 @@ function App() {
             // handleClickResetForm={handleClickResetForm}
           ></FilterList>
         </div>
-        <div id="itemsContainer">
+        <div id="itemsContainer" className="col-9-md">
           {filteredItems.map((item) => {
             return (
               <Item
                 item={item}
                 key={item.id}
-                // onClick={(id) => deleteItem(id)} 
+                onClick={(id) => deleteItem(id)} 
               ></Item>
             );
           })}
         </div>
+      </div>
       </div>
     </div>
   );
