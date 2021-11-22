@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 // displays collapsible category checkbox list
 export default function Categories({
-  categories, handleChangeCheckbox
+  categories, handleChangeCheckbox 
 }) {
   const [displayFilterListCategories, setDisplayFilterListCategories] =
     useState(false);
@@ -12,6 +12,7 @@ export default function Categories({
   const handleClickDisplayFilterCategories = () => {
     setDisplayFilterListCategories(!displayFilterListCategories);
   };
+
   return (
     <div>
       <button

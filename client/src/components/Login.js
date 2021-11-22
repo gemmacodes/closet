@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import axios from "axios";
 import Navbar from "./NavBar";
 
 function Login() {
   const [credentials, setCredentials] = useState({
-    username: "test",
-    password: "test",
+    username: "",
+    password: "",
   });
 
   const { username, password } = credentials;
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,6 +24,7 @@ function Login() {
       //store it locally
       localStorage.setItem("token", data.token);
       console.log(data.message, data.token);
+
     } catch (error) {
       console.log(error);
     }
@@ -32,19 +34,19 @@ function Login() {
     localStorage.removeItem("token");
   };
 
-  const requestData = async () => {
-    try {
-      const { data } = await axios.get("/users/profile", {
-        headers: {
-          authorization: "Bearer " + localStorage.getItem("token"), //getItem retrieves token from local storage
-        },
-      });
+  // const requestData = async () => {
+  //   try {
+  //     const { data } = await axios.get("/users/profile", {
+  //       headers: {
+  //         authorization: "Bearer " + localStorage.getItem("token"), //getItem retrieves token from local storage
+  //       },
+  //     });
 
-      console.log(data.message);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     console.log(data.message);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div>
@@ -74,9 +76,9 @@ function Login() {
         <button className="btn btn-outline-dark me-3" onClick={logout}>
           Log out
         </button>
-        <button className=" btn btn-outline-primary" onClick={requestData}>
+        {/* <button className=" btn btn-outline-primary" onClick={requestData}>
           Request protected data
-        </button>
+        </button> */}
         </div>
       </div>
     </div>

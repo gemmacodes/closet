@@ -6,7 +6,7 @@ import useAuth from "../hooks/useAuth";
 // screen if you're not yet authenticated.
 function PrivateRoute({ children }) {  // the children are the "protected" components
   let auth = useAuth();
-  return auth ? children : <Navigate to="/login" />;
+  return auth.isLoggedIn ? children : <Navigate to="/login" />;
 }
 
 export default PrivateRoute;

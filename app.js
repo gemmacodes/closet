@@ -9,6 +9,7 @@ var itemRouter = require("./routes/items");
 var categoryRouter = require("./routes/categories");
 var seasonRouter = require("./routes/seasons");
 var colorRouter = require("./routes/colors");
+var usersRouter = require("./routes/users");
 
 var app = express();
 
@@ -23,6 +24,7 @@ app.use("/items", itemRouter);
 app.use("/categories", categoryRouter);
 app.use("/seasons", seasonRouter);
 app.use("/colors", colorRouter);
+app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,6 +1,5 @@
 var express = require("express");
 var router = express.Router();
-const db = require("../model/helper");
 var models = require("../models");
 
 // WORKS: gets all items with color AND season
@@ -36,7 +35,7 @@ router.get("/", async function (req, res) {
 
 async function getFilteredItems(req) {
   try {
-    const { categories, colors, seasons } = req.query;
+    const { categories, colors, seasons } = req.query; //"?categories=1,2,3&colors=2&seasons=3,4"
     let selectedCategories = [];
     let selectedSeasons = [];
     let selectedColors = [];
@@ -51,7 +50,7 @@ async function getFilteredItems(req) {
       );
       selectedCategories = categoryList.map(e => e.dataValues.id);  // turns categoryList into an array of values [1,2,3,4,5....]
 
-    } else {selectedCategories = categories.split(",")};
+    } else {selectedCategories = categories.split(",")}; //[1,2,3]
 
 
     if (!seasons) { 
