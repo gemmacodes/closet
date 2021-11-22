@@ -11,14 +11,11 @@ a.h1 {
   position: relative;
 }
 
-#filterContainer {
-  margin-left: 4%;
-}
 
 #itemsContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  position: absolute;
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr 1fr; 
+  position: absolute; 
   width: 75%;
   top: 0%;
   left: 25%;

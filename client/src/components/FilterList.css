@@ -101,7 +101,7 @@
 }
 
 #reset-button {
-  width: 48%;
+  /* width: 48%; */
   text-align: center;
   background-color: #eeeeee;
   color: rgb(179, 160, 160);

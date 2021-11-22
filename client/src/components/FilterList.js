@@ -8,14 +8,8 @@ import "./FilterList.css";
 
 export default function FilterList({
   categories,
-  // checkedStateCategories,
-  // handleChangeCheckedCategories,
   colors,
-  // checkedStateColors,
-  // handleChangeCheckedColors,
   seasons,
-  // checkedStateSeasons,
-  // handleChangeCheckedSeasons,
   handleChangeCheckbox,
   handleClickResetForm,
 }) {
@@ -52,7 +46,7 @@ export default function FilterList({
         onReset={handleClickResetForm}
         // className={!displayFilterList ? "hidden-content-list" : ""}
       >
-        <p>Search by...</p>
+        <p><i>Search by...</i></p>
         <Categories
           categories={categories}
           handleChangeCheckbox={handleChangeCheckbox}
@@ -79,7 +73,7 @@ export default function FilterList({
           >
             CLEAR ALL
           </button>
-          <button
+          {/* <button
             type="button"
             onMouseEnter={() => setMouseOverFormDoneButton(true)}
             onMouseLeave={() => setMouseOverFormDoneButton(false)}
@@ -92,7 +86,7 @@ export default function FilterList({
             }
           >
             DONE
-          </button>
+          </button> */}
         </div>
       </form>
     </div>

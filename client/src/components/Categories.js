@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import Category from "./Category.js";
 
 // displays collapsible category checkbox list
 export default function Categories({

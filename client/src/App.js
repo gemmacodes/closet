@@ -12,25 +12,15 @@ function App() {
 
   const [filteredItems, setFilteredItems] = useState([]);
 
-  // const [checkedStateCategories, setCheckedStateCategories] = useState({});
-  // const [checkedStateColors, setCheckedStateColors] = useState({});
-  // const [checkedStateSeasons, setCheckedStateSeasons] = useState({});
-
-  // this is an idea I had, instead of storing the 3 checkedStates in 3 different empty objects, do it in only one object containing that properties
-  // const [checkedStateFilters, setCheckedStateFilters] = useState({
-  //   categories: {},
-  //   colors: {},
-  //   seasons: {}
-  // });
-
  
-  // on page load, populate colors, seasons, categories and filteredItems arrays  
+  // on page load, populate colors, seasons, and categories arrays  
   useEffect(() => {
     getColors();  
     getSeasons();
     getCategories();
   }, []);
 
+  // calls getFilteredItems() whenever colors, seasons or categories changes
   useEffect(() => {
     getFilteredItems();
   }, [colors, seasons, categories]);
@@ -143,24 +133,18 @@ function App() {
 
   // const handleClickResetForm = (event) => {
   //   event.preventDefault();
-  //   setCheckedStateCategories({});
-  //   setCheckedStateColors({});
-  //   setCheckedStateSeasons({});
+  //   setCategories(categories.map(category => ({...category, isChecked : false})));
+  //   setColors(colors.map(color => ({...color, isChecked : false})));
+  //   setSeasons(seasons.map(season => ({...season, isChecked : false})));
   // };
 
   return (
     <div>
       <div className="mb-3"><Navbar/></div>
 
-      {/* <div className="text-center mt-4">
-        <img src="https://cdn-icons.flaticon.com/png/512/3959/premium/3959060.png?token=exp=1637183899~hmac=ad944934feb2fb770d15419cb102b684" width="60" height="60" class="d-inline-block" alt="my closet logo"/>
-        <br/>
-        <a className="h1" style={{textDecoration: 'none' }} href="/">My closet</a>
-      </div> */}
-
       <div className="container">
       <div id="filter-and-items-container" className="row">
-        <div id="filterContainer" className="col-3-md">
+        <div id="filterContainer" >
           <FilterList
             categories={categories}
             colors={colors}
@@ -169,7 +153,7 @@ function App() {
             // handleClickResetForm={handleClickResetForm}
           ></FilterList>
         </div>
-        <div id="itemsContainer" className="col-9-md">
+        <div id="itemsContainer">
           {filteredItems.map((item) => {
             return (
               <Item
