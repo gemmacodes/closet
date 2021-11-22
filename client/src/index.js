@@ -4,15 +4,23 @@ import App from "./App";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddItemForm from "./components/AddItemForm";
+import Login from "./components/Login";
+
+import AuthProvider from "./components/AuthProvider";
+import PrivateRoute from "./components/PrivateRoute";
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App/>}/>
-        <Route path="/new" element={<AddItemForm />}/>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />}/>
+          <Route path="/closet" element={<PrivateRoute><App/></PrivateRoute>}/>
+          <Route path="/new" element={<PrivateRoute><AddItemForm /></PrivateRoute>}/>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
