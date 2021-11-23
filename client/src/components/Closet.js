@@ -1,5 +1,5 @@
 import "./Closet.css";
-import React, { useEffect, useState, useLocation } from "react";
+import React, { useEffect, useState } from "react";
 import FilterList from "./FilterList.js";
 import Item from "./Item.js";
 import Navbar from "./NavBar";
@@ -96,7 +96,6 @@ function Closet() {
     switch (name){
       case 'season':
         setSeasons((seasons) => (seasons.map(season => (season.id === id ? {...season, isChecked : !season.isChecked} : season))));
-        // const seasonsQuery = 
         break;
       case 'color':
         setColors((colors) => (colors.map(color => (color.id === id ? {...color, isChecked : !color.isChecked} : color))));
@@ -106,7 +105,6 @@ function Closet() {
       break;
     }
   };
-
 
 
   const deleteItem = (id) => {

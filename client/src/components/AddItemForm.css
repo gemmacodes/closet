@@ -4,46 +4,6 @@
   /* font-family: "Roboto Slab"; */
 }
 
-/* #new-item-url {
-  width: 100%;
-  padding: 6px;
-  background-color: #eeeeee;
-  border: none;
-  border-radius: 5px;
-} */
-/* 
-select {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  border-radius: 5px;
-  background-color: #eeeeee;
-}
-
-#new-item-category-container {
-  margin: 1%;
-}
-
-#new-item-category {
-  margin: 1%;
-}
-
-#new-item-color-container {
-  margin: 2%;
-}
-
-#new-item-color {
-  margin: 1%;
-}
-
-#new-item-season-container {
-  margin: 2%;
-}
-
-#new-item-season {
-  margin: 1%;
-} */
-
 #submit-button {
   background-color: rgb(63, 50, 50)!important;
   border-color: rgb(63, 50, 50)!important;

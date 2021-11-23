@@ -109,12 +109,3 @@
 .active-reset-button {
   opacity: 0.5;
 }
-#done-button {
-  width: 35%;
-  text-align: center;
-  background-color: rgb(63, 50, 50);
-  color: whitesmoke;
-}
-.active-done-button {
-  opacity: 0.5;
-}

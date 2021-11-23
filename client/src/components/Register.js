@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./NavBar";
 import axios from "axios";
+import Noty from 'noty';
 
 function Register() {
   const [user, setUser] = useState({
-    username: "test",
-    password: "test",
+    username: "",
+    password: "",
   });
 
   const navigate = useNavigate();
@@ -23,8 +24,24 @@ function Register() {
     })
       .then((result) => {
         navigate("/login");
+        new Noty({
+          theme: 'metroui',
+          type: 'success',
+          layout: 'center',
+          text: 'Registration completed. Log in to start filling your closet!',
+          timeout: 1000
+        }).show();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        new Noty({
+          theme: 'metroui',
+          type: 'error',
+          layout: 'center',
+          text: 'Ouch! Something went wrong. Try again!',
+          timeout: 2000
+        }).show();
+      });
   };
 
   return (
@@ -39,6 +56,7 @@ function Register() {
           name="username"
           type="text"
           className="form-control mb-2"
+          placeholder="Choose a username"
         />
         <input
           value={user.password}
@@ -46,10 +64,11 @@ function Register() {
           name="password"
           type="password"
           className="form-control mb-2"
+          placeholder="Choose a password"
         />
         </div>
         <div className="text-center p-4">
-        <button className=" btn btn-primary" onClick={register}>
+        <button className=" btn btn-dark" onClick={register}>
           Sign up
         </button>
         </div>

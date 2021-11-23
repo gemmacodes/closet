@@ -15,9 +15,9 @@ export default function AddItemForm() {
 
   // new item (newItem) to be posted to DB
   const [newItem, setNewItem] = useState({
-    categoryId: 1,
-    colorIds: 1,
-    seasonIds: 1,
+    categoryId: null,
+    colorIds: "",
+    seasonIds: "",
     image: "",
   });
 
@@ -176,7 +176,10 @@ export default function AddItemForm() {
       </div>
       <div className="col-md-1"></div>
       <div className="col-md-8 py-5 rounded" style={{backgroundColor: "#ffffff"}}>
-      <img src={newItem.image} width="50%"/>
+        <div className="container"> 
+          <h4> Your closet is getting: <code>{newItem.categoryId && categories[newItem.categoryId-1].name}</code></h4>
+        </div>
+        <div className="text-center"><img src={newItem.image} width="50%"/></div>
       </div>
     </div>
     </div>

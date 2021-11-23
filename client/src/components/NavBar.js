@@ -6,8 +6,9 @@ import useAuth from "../hooks/useAuth";
 export default function Navbar() {
 	const auth = useAuth();
 	const navigate = useNavigate();
+	
 	const logout = () => {
-	  auth.signout(() => navigate("/login"));
+		auth.signout(() => navigate("/login"));
 	};
 
 	return (
@@ -32,6 +33,9 @@ export default function Navbar() {
 						<button onClick={logout} className="btn btn-dark-outline">
 							Logout
 						</button>
+					)}
+					{auth.isLoggedIn && (
+						<button className="btn btn-dark me-4"><Link to="/closet" className="nav-item nav-link text-light">My closet</Link></button>
 					)}
 					{auth.isLoggedIn && (
 						<button className="btn btn-primary"><Link to="/new" className="nav-item nav-link text-light">Add new item</Link></button>
