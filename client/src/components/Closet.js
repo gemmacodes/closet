@@ -94,13 +94,13 @@ function Closet() {
 
   const handleChangeCheckbox = (name, id) => {
     switch (name){
-      case 'season':
+      case 'Seasons':
         setSeasons((seasons) => (seasons.map(season => (season.id === id ? {...season, isChecked : !season.isChecked} : season))));
         break;
-      case 'color':
+      case 'Colors':
         setColors((colors) => (colors.map(color => (color.id === id ? {...color, isChecked : !color.isChecked} : color))));
       break;
-      case 'category':
+      case 'Categories':
         setCategories((categories) => (categories.map(category => (category.id === id ? {...category, isChecked : !category.isChecked} : category))));
       break;
     }

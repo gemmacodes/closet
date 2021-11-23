@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import Categories from "./Categories.js";
-import Colors from "./Colors.js";
-import Seasons from "./Seasons.js";
+import CheckboxList from "./CheckboxList.js";
 import "./FilterList.css";
 
 export default function FilterList({
@@ -24,18 +22,21 @@ export default function FilterList({
         onReset={handleClickResetForm}
       >
         <p><i>Search by...</i></p>
-        <Categories
-          categories={categories}
+        <CheckboxList
+          name="Categories"
+          listItems={categories}
           handleChangeCheckbox={handleChangeCheckbox}
-        ></Categories>
-        <Colors
-          colors={colors}
+        ></CheckboxList>
+        <CheckboxList
+          name="Colors"
+          listItems={colors}
           handleChangeCheckbox={handleChangeCheckbox}
-        ></Colors>
-        <Seasons
-          seasons={seasons}
+        ></CheckboxList>
+        <CheckboxList
+          name="Seasons"
+          listItems={seasons}
           handleChangeCheckbox={handleChangeCheckbox}
-        ></Seasons>
+        ></CheckboxList>
         {/* <div id="filter-list-button-container">
           <button
             type="reset"
