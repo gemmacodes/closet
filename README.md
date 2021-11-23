@@ -8,6 +8,7 @@
 3. [Architecture](#architecture)
     - [Database schema](#database-schema)
     - [API routes plan](#API-routes-plan)
+    - [Components](#components)
 4. [Support](#support)
 
 ## Context
@@ -75,7 +76,45 @@ To be uploaded
 
 ### API routes plan
 
-To be uploaded
+| URl                | HTTP METHOD | DESCRIPTION                 | REQUEST OBJECT                                                       | RESPONSE OBJECT                                                                                                       |
+|--------------------|-------------|-----------------------------|----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| /items/all         | GET         | Get all items               | n/a                                                                  | [ { id: integer, image: string, CategoryId: integer, createdAt: date, UpdatedAt: date, seasons: [], colors:[] }, ...] |
+| /items/            | GET         | Get items by query params   | n/a                                                                  | [ { id: integer, image: string, CategoryId: integer, createdAt: date, UpdatedAt: date, seasons: [], colors:[] }, ...] |
+| /items             | POST        | Create new item             | { image: string, CategoryId: integer, seasonsIds: [], colorsIds:[] } | [ { id: integer, image: string, CategoryId: integer, createdAt: date, UpdatedAt: date, seasons: [], colors:[] }, ...] |
+| /api/sightings/:id | DELETE      | Delete sighting information | n/a                                                                  | [ { id: integer, image: string, CategoryId: integer, createdAt: date, UpdatedAt: date, seasons: [], colors:[] }, ...] |
+
+| URl                    | HTTP METHOD | DESCRIPTION                | REQUEST OBJECT | RESPONSE OBJECT                                                                               |
+|------------------------|-------------|----------------------------|----------------|-----------------------------------------------------------------------------------------------|
+| /categories/           | GET         | Get all categories         | n/a            | [ { id: integer, name: string, createdAt: date, UpdatedAt: date }, ...]                       |
+| /categories/:id/items/ | GET         | Gets items by category ID  | n/a            | [ { id: integer, image: string, CategoryId: integer, createdAt: date, UpdatedAt: date }, ...] |
+
+| URl                | HTTP METHOD | DESCRIPTION             | REQUEST OBJECT | RESPONSE OBJECT                                                                                               |
+|--------------------|-------------|-------------------------|----------------|---------------------------------------------------------------------------------------------------------------|
+| /colors/           | GET         | Get all colors          | n/a            | [ { id: integer, name: string, createdAt: date, UpdatedAt: date }, ...]                                       |
+| /colors/:id/items/ | GET         | Gets items by color ID  | n/a            | [ { id: integer, image: string, CategoryId: integer, createdAt: date, UpdatedAt: date, itemColors: {} }, ...] |
+
+| URl                 | HTTP METHOD | DESCRIPTION              | REQUEST OBJECT | RESPONSE OBJECT                                                                                                |
+|---------------------|-------------|--------------------------|----------------|----------------------------------------------------------------------------------------------------------------|
+| /seasons/           | GET         | Get all seasons          | n/a            | [ { id: integer, name: string, createdAt: date, UpdatedAt: date }, ...]                                        |
+| /seasons/:id/items/ | GET         | Gets items by season ID  | n/a            | [ { id: integer, image: string, CategoryId: integer, createdAt: date, UpdatedAt: date, itemSeasons: {} }, ...] |
+
+| URl             | HTTP METHOD | DESCRIPTION                   | REQUEST OBJECT         | RESPONSE OBJECT |
+|-----------------|-------------|-------------------------------|------------------------|-----------------|
+| /users/login    | POST        | Provides authentication token | { username, password } | token           |
+| /users/register | POST        | Adds new user to database     | { username, password } |                 |
+
+## Components
+
+- AddItemForm.js
+- Closet.js
+  - FilterList.js
+    - CheckboxList.js
+      - Item.js
+- AuthProvider.js
+  - Register.js
+  - Login.js
+- NavBar.js
+  - PrivateRoute.js
 
 ## Support
 
