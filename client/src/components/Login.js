@@ -33,10 +33,13 @@ function Login() {
         type: 'success',
         layout: 'center',
         text: 'Log in successful. Welcome!',
-        timeout: 1000
+        timeout: 1000,
+        callbacks: {
+          afterClose: function () {
+            window.location.href = "/closet";
+          }
+        }
       }).show();
-      
-      window.location.href = "/closet"
 
     } catch (error) {
       console.log(error);
@@ -85,9 +88,6 @@ function Login() {
         <button className="btn btn-outline-dark me-3" onClick={logout}>
           Log out
         </button>
-        {/* <button className=" btn btn-outline-primary" onClick={requestData}>
-          Request protected data
-        </button> */}
         </div>
       </div>
     </div>

@@ -40,7 +40,6 @@ export default function Navbar() {
 					{auth.isLoggedIn && (
 						<button className="btn btn-primary"><Link to="/new" className="nav-item nav-link text-light">Add new item</Link></button>
 					)}
-						{/* <a className="nav-item nav-link p-2 text-dark" href="https://github.com/switcherette/my-wardrobe" target="_blank" rel="noreferrer"><img src="https://cdn-icons.flaticon.com/png/512/3488/premium/3488435.png?token=exp=1636986814~hmac=e93595cbfb46a15218cf790f31bdd332" width="40" alt="github icon"/></a> */}
 				</div>
 			</div>
 		</nav>

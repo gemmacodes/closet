@@ -83,7 +83,7 @@ export default function AddItemForm() {
     addItem();
   };
 
-  // WORKS!!  creates query and posts new item to DB. returns ???
+  // creates query and posts new item to DB. returns ???
   const addItem = async () => {
     try {
       const { categoryId, colorIds, seasonIds, image } = newItem;
@@ -106,7 +106,12 @@ export default function AddItemForm() {
         type: 'success',
         layout: 'center',
         text: 'The item has been added to your closet, go check it out!',
-        timeout: 2000
+        timeout: 1000,
+        callbacks: {
+          afterClose: function () {
+            window.location.href = "/closet";
+          }
+        }
       }).show();
     } catch (error) {
       console.log(error);
@@ -115,7 +120,7 @@ export default function AddItemForm() {
         type: 'error',
         layout: 'center',
         text: 'Ouch! Something went wrong. Try again!',
-        timeout: 2000
+        timeout: 1000
       }).show();
     }
   };

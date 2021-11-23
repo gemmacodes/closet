@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import FilterList from "./FilterList.js";
 import Item from "./Item.js";
 import Navbar from "./NavBar";
-// import Masonry from 'react-masonry-css'
 
 function Closet() {
   const [colors, setColors] = useState([]); // [{id: 1, name: "red", isChecked: false},...]
@@ -123,7 +122,7 @@ function Closet() {
         finalQuery.push( `${key}=${query[key]}`)  // eg. ["categories=1,2,3", "colors=2", "seasons=3,4"]
     }
 
-    const filterQueryString = finalQuery.length !== 0 ? `?${finalQuery.join("&")}`: "all"; // eg. "?categories=1,2,3&colors=2&seasons=3,4"
+    const filterQueryString = finalQuery.length !== 0 ? `?${finalQuery.join("&")}`: ""; // eg. "?categories=1,2,3&colors=2&seasons=3,4"
     
     fetch(`/items/${id}/${filterQueryString}`, {
       method: "DELETE",
@@ -131,13 +130,6 @@ function Closet() {
       .then((res) => res.json())
       .then((data) => setFilteredItems(data));
   };
-
-  // const handleClickResetForm = (event) => {
-  //   event.preventDefault();
-  //   setCategories(categories.map(category => ({...category, isChecked : false})));
-  //   setColors(colors.map(color => ({...color, isChecked : false})));
-  //   setSeasons(seasons.map(season => ({...season, isChecked : false})));
-  // };
 
   return (
     <div>
@@ -150,7 +142,6 @@ function Closet() {
             colors={colors}
             seasons={seasons}
             handleChangeCheckbox={handleChangeCheckbox}
-            // handleClickResetForm={handleClickResetForm}
           ></FilterList>
         </div>
         <div id="itemsContainer">
