@@ -8,9 +8,11 @@ function App(){
     <div id="welcome">
       <div className="mb-5"><Navbar/></div>
       <br/><br/><br/>
-      <h1 className="display-2 text-light text-center">Welcome!</h1> 
-      <br/><br/>
-      <p className="h4 text-light text-center">Register and/or log in to see your closet</p> 
+      <span className="mx-auto">
+        <h1 className="display-1 text-light text-center">Welcome!</h1>
+        <br/><br/>
+        <p className="h4 text-light text-center">Register and/or log in to take a peek inside the closet!</p>
+      </span>
       <br/><br/><br/><br/>
     </div>
   );
