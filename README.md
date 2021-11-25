@@ -72,7 +72,7 @@ Happy coding!
 
 ### Database schema
 
-To be uploaded
+![Database schema](https://github.com/switcherette/my-wardrobe/blob/main/images/newDB.png?raw=true)
 
 ### API routes plan
 
