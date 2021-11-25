@@ -13,7 +13,7 @@
 
 ## Context
 
-In this repository you will find My Wardrobe App, which allows the user to store and filter their closet contents.
+In this repository you will find a feature extension for My Wardrobe App, a project developed by @mariamb97 which allows the user to store and filter their closet contents.
 
 ## Setup
 
